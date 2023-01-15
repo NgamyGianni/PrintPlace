@@ -1,80 +1,62 @@
-const getLinkFromResult = (result : any) => JSON.parse(result).output[0];
+import axios from "axios"
 
-export const sendPrompt = async (prompt : any) => {
-    let returnValue = undefined;
-    const key = "";
+const getLinkFromResult = (result: any) => result.output[0]
 
-    const raw = {
-        "key": key,
-        "prompt": prompt,
-        "negative_prompt": "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, (((skinny))), glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs)), anime",
-        "width": "512",
-        "height": "512",
-        "samples": "1",
-        "num_inference_steps": "20",
-        "seed": null,
-        "guidance_scale": 7.5,
-        "webhook": null,
-        "track_id": null
-    }
-    
-    var headersOpt = {  
-        "content-type": "application/json",
-    }
-    
-    const requestOptions : RequestInit = {
-        method: 'POST',
-        headers : headersOpt,
-        body: JSON.stringify(raw),
-        redirect: 'follow'
-    };
-        
-    await fetch("https://stablediffusionapi.com/api/v3/text2img", requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            returnValue = getLinkFromResult(result)
-        })
-        .catch(error => console.log('error', error));
+export const sendPrompt = async (prompt: string) => {
+	let returnValue = undefined
 
-    
-    return returnValue;
+	try {
+		const result = await axios.post("http://127.0.0.1:3000/prompt", {
+			prompt
+		})
+
+		if(result !== undefined) {
+			return getLinkFromResult(result.data.result)
+		}
+	return returnValue
+
+	
+	} catch (error: any) {
+		console.log(error)
+	}
+
 }
 
-const handler = async (req : any) => {
-    const key = "0abbda6719889bc3fa505490eed33aff6a18a59e";
+const handler = async (req: any) => {
+	const key = "0abbda6719889bc3fa505490eed33aff6a18a59e"
 
-    const response = await fetch("https://api.replicate.com/v1/predictions", {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // Pinned to a specific version of Stable Diffusion
-        // See https://replicate.com/stability-ai/stable-diffussion/versions
-        version: "6359a0cab3ca6e4d3320c33d79096161208e9024d174b2311e5a21b6c7e1131c",
-  
-        // This is the text prompt that will be submitted by a form on the frontend
-        input: { prompt: req },
-      }),
-    });
+	const response = await fetch("https://api.replicate.com/v1/predictions", {
+		method: "POST",
+		headers: {
+			Authorization: `Token ${key}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			// Pinned to a specific version of Stable Diffusion
+			// See https://replicate.com/stability-ai/stable-diffussion/versions
+			version: "6359a0cab3ca6e4d3320c33d79096161208e9024d174b2311e5a21b6c7e1131c",
 
-    let res = {
-        "statusCode" : 0,
-        "response" : {}
-    };
-  
-    if (response.status !== 201) {
-      let error = await response.json();
-      res.statusCode = 500;
-      res.response = JSON.stringify({ detail: error.detail });
-    }
-  
-    const prediction = await response.json();
-    res.statusCode = 201;
-    res.response = prediction;
+			// This is the text prompt that will be submitted by a form on the frontend
+			input: { prompt: req }
+		})
+	})
 
-    return res;
+	let res = {
+		statusCode: 0,
+		response: {}
+	}
+
+	if (response.status !== 201) {
+		let error = await response.json()
+		res.statusCode = 500
+		res.response = JSON.stringify({ detail: error.detail })
+	}
+
+	const prediction = await response.json()
+	res.statusCode = 201
+	res.response = prediction
+
+	return res
 }
 
 //const result = await sendPrompt("bitcoin");
