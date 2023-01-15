@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { Card, Textarea, Button, Radio, Image, Text, Grid, Input, Container } from "@nextui-org/react"
-import { Loading } from "@nextui-org/react"
+import { Card, Textarea, Button, Radio, Image, Text, Grid, Input, Container, Loading, Navbar } from "@nextui-org/react"
 import RadioGroup from "@nextui-org/react/types/radio/radio-group"
 import reactLogo from "../assets/react.svg"
 import * as API from "../logic/ApiRequest"
@@ -51,6 +50,19 @@ export const Main = () => {
 
 	return (
 		<Card variant="bordered">
+			<Navbar isBordered variant="floating">
+				<Navbar.Content hideIn="xs" variant="highlight">
+					<Navbar.Item>
+						<Button>Create</Button>
+					</Navbar.Item>
+					<Navbar.Item>
+						<Button bordered>Edit</Button>
+					</Navbar.Item>
+					<Navbar.Item>
+						<Button bordered>Variation</Button>
+					</Navbar.Item>
+				</Navbar.Content>
+			</Navbar>
 			{state.isLoading ? (
 				<Card css={{ width: "640px", height: "360px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 					<Loading />
