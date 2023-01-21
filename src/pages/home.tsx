@@ -12,8 +12,7 @@ interface LabelState {
 	isLoading: boolean
 }
 
-export const Main = () => {
-
+export const Home = () => {
 	const baseImage = "https://media.tenor.com/0SK8wi-u_gYAAAAd/no-signal-tv.gif"
 
 	const [state, setState] = useState<LabelState>({
@@ -62,7 +61,9 @@ export const Main = () => {
 						css={{ width: "100%", height: "33%" }}
 						status="primary"
 						placeholder="Type your description"
-						onKeyDown={(e) => {if (e.keyCode === 13) send()}}
+						onKeyDown={(e) => {
+							if (e.keyCode === 13) send()
+						}}
 						onChange={(e) => setState((s) => ({ ...s, val: e.target.value }))}
 					/>
 				</Grid>

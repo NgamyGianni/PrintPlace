@@ -1,8 +1,9 @@
 import { Navbar, Text, Button, Link, Avatar } from "@nextui-org/react"
+import useAuthStore from "../store/authStore"
 
 export const HeaderNavbar = () => {
 	const pages: object = { Try: "#", Explore: "#" }
-	const logged = true
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 	const contentPages = (pages: object) => Object.entries(pages).map((k) => <Navbar.Link href={k[1]}>{k[0]}</Navbar.Link>)
 
 	return (
@@ -14,7 +15,7 @@ export const HeaderNavbar = () => {
 			</Navbar.Brand>
 			<Navbar.Content hideIn="xs">{contentPages(pages)}</Navbar.Content>
 			<Navbar.Content>
-				{!logged && (
+				{!isLoggedIn && (
 					<>
 						<Navbar.Link color="inherit" href="#">
 							Login
@@ -26,7 +27,7 @@ export const HeaderNavbar = () => {
 						</Navbar.Item>
 					</>
 				)}
-				{logged && (
+				{isLoggedIn && (
 					<>
 						<Navbar.Item>
 							<Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" size="lg" />
