@@ -1,11 +1,15 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { Main } from './components/home'
+import { Main } from './pages/home'
+import { HeaderNavbar } from './components/Navbar'
 
 function App() {
 
   return (
-      <Main />
+    <div>
+    <HeaderNavbar/>
+    <Main />
+    </div>
   )
 }
 

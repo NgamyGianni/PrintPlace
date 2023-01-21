@@ -20,6 +20,19 @@ const myDarkTheme = createTheme({
   }
 })
 
+const myLightTheme = createTheme({
+  type: 'light',
+  theme: {
+    colors: {
+      // brand colors
+      background: '#000000',
+      text: '#000',
+    },
+    space: {},
+    fonts: {}
+  }
+})
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <NextUIProvider theme={myDarkTheme}>
