@@ -1,4 +1,5 @@
-import { Navbar, Text, Button, Link, Avatar } from "@nextui-org/react"
+import { Navbar, Text, Button, Link, Avatar, User } from "@nextui-org/react"
+import { Link as RouterLink } from "react-router-dom"
 import useAuthStore from "../store/authStore"
 
 export const HeaderNavbar = () => {
@@ -17,22 +18,23 @@ export const HeaderNavbar = () => {
 			<Navbar.Content>
 				{!isLoggedIn && (
 					<>
-						<Navbar.Link color="inherit" href="#">
+						<Navbar.Link as={RouterLink} color="inherit" to="/login">
 							Login
 						</Navbar.Link>
 						<Navbar.Item>
-							<Button auto flat as={Link} href="#">
-								Sign Up
-							</Button>
+							<Navbar.Link as={RouterLink} to="/register">
+								<Button auto flat>
+									Sign Up
+								</Button>
+							</Navbar.Link>
 						</Navbar.Item>
 					</>
 				)}
 				{isLoggedIn && (
 					<>
 						<Navbar.Item>
-							<Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" size="lg" />
+							<User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="TheMaoZedong" />
 						</Navbar.Item>
-						<Navbar.Item>TheMaoZedong</Navbar.Item>
 					</>
 				)}
 			</Navbar.Content>
